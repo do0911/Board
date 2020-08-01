@@ -8,6 +8,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import axios from "axios";
 
 import Boardpage from "./Boardpage";
+import Boardwrite from "./Boardwrite";
 
 class Board extends Component {
   constructor(props) {
@@ -55,6 +56,7 @@ class Board extends Component {
           </TableBody>
         </Table>
         {this.state.data ? "" : <LinearProgress />}
+        <Boardwrite />
       </div>
     );
   }

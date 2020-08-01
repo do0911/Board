@@ -11,6 +11,9 @@ const data = fs.readFileSync("./database.json");
 const conf = JSON.parse(data);
 const mysql = require("mysql");
 
+const multer = require("multer");
+const upload = multer({ dest: "./upload" });
+
 const connection = mysql.createConnection({
   host: conf.host,
   user: conf.user,
@@ -18,10 +21,20 @@ const connection = mysql.createConnection({
   port: conf.port,
   database: conf.database,
 });
+
 connection.connect();
 
 app.get("/api/board", (req, res) => {
   connection.query("select * from board", (err, rows, fields) => {
+    res.send(rows);
+  });
+});
+
+app.post("/api/board", upload.single(), (req, res) => {
+  let name = req.body.name;
+  let content = req.body.content;
+  let sql = `INSERT INTO board VALUES (null, '${name}', '${content}')`;
+  connection.query(sql, (err, rows, fields) => {
     res.send(rows);
   });
 });
