@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Boardwrite = () => {
+const Boardwrite = ({ refresh }) => {
   const classes = useStyles();
   const [id, setId] = useState("");
   const [content, setContent] = useState("");
@@ -35,10 +35,10 @@ const Boardwrite = () => {
     e.preventDefault();
     boardwrite().then((response) => {
       console.log(response.data);
+      refresh();
     });
     setContent("");
     setId("");
-    window.location.reload();
   };
 
   const boardwrite = () => {

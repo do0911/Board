@@ -16,6 +16,7 @@ class Board extends Component {
     this.state = {
       data: "",
     };
+    this.refresh();
   }
 
   componentDidMount() {
@@ -30,6 +31,13 @@ class Board extends Component {
     });
   };
 
+  refresh = () => {
+    this.setState({
+      data: "",
+    });
+    this._getBoard();
+  };
+
   render() {
     const { data } = this.state;
     return (
@@ -37,16 +45,19 @@ class Board extends Component {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>No.</TableCell>
               <TableCell align="right">name</TableCell>
               <TableCell align="right">content</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.state.data
               ? data.map((data) => (
                   <Boardpage
+                    refresh={this.refresh}
                     key={data.id}
+                    date={data.date}
                     num={data.id}
                     name={data.name}
                     content={data.content}
@@ -56,7 +67,7 @@ class Board extends Component {
           </TableBody>
         </Table>
         {this.state.data ? "" : <LinearProgress />}
-        <Boardwrite />
+        <Boardwrite refresh={this.refresh} />
       </div>
     );
   }

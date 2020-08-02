@@ -33,8 +33,17 @@ app.get("/api/board", (req, res) => {
 app.post("/api/board", upload.single(), (req, res) => {
   let name = req.body.name;
   let content = req.body.content;
-  let sql = `INSERT INTO board VALUES (null, '${name}', '${content}')`;
+  let sql = `INSERT INTO board VALUES (null, '${name}', '${content}', now())`;
+  console.log(req.headers["x-forwarded-for"]);
   connection.query(sql, (err, rows, fields) => {
+    res.send(rows);
+  });
+});
+
+app.delete("/api/board/:id", (req, res) => {
+  let sql = "DELETE FROM board WHERE id = ?";
+  let params = [req.params.id];
+  connection.query(sql, params, (err, rows, fields) => {
     res.send(rows);
   });
 });
